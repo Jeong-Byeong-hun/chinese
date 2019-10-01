@@ -72,7 +72,7 @@ public class WordStudyActivity extends AppCompatActivity {
 
 
         //next 버튼
-        Button next_btn = (Button) findViewById(R.id.next_btn);
+        final Button next_btn = (Button) findViewById(R.id.next_btn);
         next_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,23 +85,44 @@ public class WordStudyActivity extends AppCompatActivity {
         CircleIndicator indicator = (CircleIndicator) findViewById(R.id.indicator);
         indicator.setViewPager(vPager);
 
+        //gif 설정하는 부분
         word = (ImageView) findViewById(R.id.word_gif);
 
         GlideDrawableImageViewTarget gifImage = new GlideDrawableImageViewTarget(word);
-//        Glide.with(this).load(R.drawable.pai).into(gifImage);
+        Glide.with(this).load(R.drawable.pai).into(gifImage);
 
-        switch (indicator.getVerticalScrollbarPosition()){
-            case 0:
-                Glide.clear(word);
-                Glide.with(this).load(R.drawable.nin).into(gifImage);
-                word.invalidate();
-                break;
-            case 1:
-                Glide.clear(word);
-                Glide.with(this).load(R.drawable.zuo).into(gifImage);
-                word.invalidate();
-                break;
-        }
+        vPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int i, float v, int i1) {
+
+            }
+
+            @Override
+            public void onPageSelected(int i) {
+                GlideDrawableImageViewTarget gif = new GlideDrawableImageViewTarget(word);
+                switch (i){
+                    case 0 :
+                        Glide.with(getApplicationContext()).load(R.drawable.pai).into(gif);
+                        next_btn.setVisibility(View.INVISIBLE);
+                        break;
+                    case 1 :
+                        Glide.with(getApplicationContext()).load(R.drawable.zuo).into(gif);
+                        next_btn.setVisibility(View.INVISIBLE);
+                        break;
+                    case 2 :
+                        Glide.with(getApplicationContext()).load(R.drawable.nin).into(gif);
+                        next_btn.setVisibility(View.VISIBLE);
+                        break;
+                        default:
+                            break;
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int i) {
+
+            }
+        });
 
 
     }
@@ -128,26 +149,30 @@ public class WordStudyActivity extends AppCompatActivity {
 
             switch (position) {
                 case 0:
-                    bundle.putString("asd", "안녕");
-                    bundle.putString("qwe", "하세요");
-                    bundle.putString("zxc", "인사");
+                    bundle.putString("word", "排");
+                    bundle.putString("speak", "pái  ");
+                    bundle.putString("mean", "열");
                     wf1.setArguments(bundle);
                     return wf1;
                 case 1:
 
-                    bundle.putString("asd", "하이");
-                    bundle.putString("qwe", "되지?");
-                    bundle.putString("zxc", "아님말고ㅎ");
+                    bundle.putString("word", "座");
+                    bundle.putString("speak", "zuò  ");
+                    bundle.putString("mean", "좌석");
                     wf1.setArguments(bundle);
                     return wf1;
                 case 2:
-                    return new WordFragment3();
+                    bundle.putString("word", "您");
+                    bundle.putString("speak", "nín  ");
+                    bundle.putString("mean", "당신");
+                    wf1.setArguments(bundle);
+                    return wf1;
                 default:
                     return null;
             }
         }
 
-        // Returns the page title for the top indicator
+        // Returns the page title for the top indicator 없어도 됨
         @Override
         public CharSequence getPageTitle(int position) {
 
@@ -155,6 +180,8 @@ public class WordStudyActivity extends AppCompatActivity {
         }
     }
 
+
+    //툴바의 뒤로가기
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
