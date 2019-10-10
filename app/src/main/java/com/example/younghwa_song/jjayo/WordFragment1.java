@@ -22,6 +22,8 @@ import static android.speech.tts.TextToSpeech.QUEUE_FLUSH;
 
 public class WordFragment1 extends Fragment implements TextToSpeech.OnInitListener {
     TextView word, speak, meaning;
+
+
     public WordFragment1() {
 
     }
@@ -77,6 +79,8 @@ public class WordFragment1 extends Fragment implements TextToSpeech.OnInitListen
 
         return view;
     }
+
+
     @Override
     public void onInit(int status) {
         if (status == TextToSpeech.SUCCESS) {

@@ -8,6 +8,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -23,10 +25,52 @@ public class WordStudyActivity extends AppCompatActivity {
 
     FragmentStatePagerAdapter fragmentStatePagerAdapter;
     static  ImageView word;
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        MenuInflater inflater =getMenuInflater();
+        inflater.inflate(R.menu.menu,menu);
+        return true;
+    }
+
+    //툴바의 뒤로가기
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+
+            case android.R.id.home: { //toolbar의 back키 눌렀을 때 동작
+                finish();
+                return true;
+            }
+            case R.id.bgOff :
+                Intent musicIntent1 = new Intent(getApplicationContext(), MusicService.class);
+                stopService(musicIntent1);
+                break;
+            case R.id.bgOn :
+
+                Intent musicIntent = new Intent(getApplicationContext(), MusicService.class);
+                startService(musicIntent);
+
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
+
+
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_word_study);
+
+
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -34,14 +78,6 @@ public class WordStudyActivity extends AppCompatActivity {
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back_white); // 커스텀 뒤로가기
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        //셋팅버튼 눌렀을 때
-
-        toolbar.findViewById(R.id.setting_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
 
 //홈버튼
         toolbar.findViewById(R.id.home_button).setOnClickListener(new View.OnClickListener() {
@@ -181,16 +217,5 @@ public class WordStudyActivity extends AppCompatActivity {
     }
 
 
-    //툴바의 뒤로가기
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home: { //toolbar의 back키 눌렀을 때 동작
-                finish();
-                return true;
-            }
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
 }
